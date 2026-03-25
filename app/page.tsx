@@ -66,17 +66,17 @@ export default function Home() {
             <div className="space-y-10 animate-fade-in-up">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 border border-secondary/20">
                 <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Est. 2010</span>
-                <span className="text-xs text-muted-foreground">Authentic Italian Craftsmanship</span>
+                <span className="text-xs text-muted-foreground">Authentic Premium Craftsmanship</span>
               </div>
 
               <h1 className="heading-hero">
-                <span className="text-foreground">Authentic Italian</span>
+                <span className="text-foreground">Authentic</span>
                 <br />
                 <span className="text-primary">Pizza Perfection</span>
               </h1>
 
               <p className="text-body-lg text-muted-foreground max-w-lg leading-relaxed">
-                Handcrafted wood-fired pizzas using traditional Italian recipes and the finest imported ingredients. Every bite is an experience of authentic flavor and passion.
+                Handcrafted wood-fired pizzas using our signature recipes and the finest imported ingredients. Every bite is an experience of authentic flavor and passion.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-6">
@@ -120,7 +120,7 @@ export default function Home() {
             <div className="relative h-96 md:h-full min-h-96 animate-fade-in-down">
               <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-2xl group">
                 <div className="w-full h-full bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center animate-float">
-                  <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Authentic Italian Pizza" className="w-full h-full object-cover" />
+                  <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Authentic Premium Pizza" className="w-full h-full object-cover" />
                 </div>
               </div>
               <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-secondary/20 rounded-full blur-2xl opacity-50"></div>
@@ -220,7 +220,7 @@ export default function Home() {
           <div className="text-center mb-20 animate-fade-in-up">
             <p className="text-xs uppercase tracking-widest text-primary-foreground/70 font-semibold mb-4">Customer Stories</p>
             <h2 className="heading-lg text-primary-foreground mb-6">Loved by Our Community</h2>
-            <p className="text-body-lg text-primary-foreground/80 max-w-2xl mx-auto">Join thousands who've discovered the art of authentic Italian pizza</p>
+            <p className="text-body-lg text-primary-foreground/80 max-w-2xl mx-auto">Join thousands who've discovered the art of Authentic Premium Pizza</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -251,9 +251,9 @@ export default function Home() {
           <div className="card-premium rounded-2xl p-12 sm:p-16 text-center group hover-lift bg-gradient-to-br from-background to-muted/50 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-40 h-40 bg-secondary/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
             <div className="relative z-10 animate-fade-in-up">
-              <h2 className="heading-xl text-foreground mb-6">Experience Italian Excellence</h2>
+              <h2 className="heading-xl text-foreground mb-6">Experience Premium Excellence</h2>
               <p className="text-body-lg text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-                Reserve your table or place an order now and taste the difference authentic Italian pizza can make.
+                Reserve your table or place an order now and taste the difference Authentic Premium Pizza can make.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/menu">
@@ -277,6 +277,7 @@ export default function Home() {
     </div>
   );
 }
+
 
 
 

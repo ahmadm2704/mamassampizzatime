@@ -29,7 +29,7 @@ export function Navbar() {
         <div className="flex justify-between items-center h-20 md:h-24">
           {/* Logo */}
           <Link href="/" className="flex items-center group hover-lift shrink-0">
-            <img src="/logoo-transparent.png" alt="Mama Sam Pizza" className="h-16 md:h-20 w-auto object-contain rounded-full drop-shadow-md" />
+            <img src="/logoo.png" alt="Mama Sam Pizza" className="h-16 md:h-20 w-auto object-contain rounded-full drop-shadow-md" />
           </Link>
 
           {/* Desktop Menu */}
@@ -91,3 +91,4 @@ export function Navbar() {
     </nav>
   );
 }
+

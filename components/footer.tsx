@@ -20,7 +20,7 @@ export function Footer() {
             {/* Brand Section */}
             <div className="space-y-6 col-span-1 md:col-span-1">
               <div className="flex items-center gap-3">
-                <img src="/logoo-transparent.png" alt="Mama Sam Pizza" className="h-24 w-auto object-contain bg-white/5 p-2 rounded-full backdrop-blur-sm drop-shadow-md" />
+                <img src="/logoo.png" alt="Mama Sam Pizza" className="h-24 w-auto object-contain bg-white/5 p-2 rounded-full backdrop-blur-sm drop-shadow-md" />
               </div>
               <p className="text-sm text-primary-foreground/70 leading-relaxed">
                 Crafting authentic Italian pizza with passion since 2010. Every slice tells a story of tradition and quality.
@@ -160,3 +160,4 @@ export function Footer() {
     </footer>
   );
 }
+

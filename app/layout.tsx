@@ -8,12 +8,12 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Mama Sam Pizza - Authentic Italian Wood-Fired Pizza',
-  description: 'Authentic Italian pizza made with fresh ingredients and traditional techniques. Order online for delivery, pickup, or dine-in.',
+  title: 'Mama Sam Pizza - Authentic Premium Wood-Fired Pizza',
+  description: 'Authentic Premium pizza made with fresh ingredients and artisan techniques. Order online for delivery, pickup, or dine-in.',
   generator: 'v0.app',
   icons: {
-    icon: '/logoo-transparent.png',
-    apple: '/logoo-transparent.png',
+    icon: '/logoo.png',
+    apple: '/logoo.png',
   },
 }
 
@@ -33,3 +33,6 @@ export default function RootLayout({
     </html>
   )
 }
+
+
+

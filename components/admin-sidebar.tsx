@@ -45,7 +45,7 @@ export function AdminSidebar() {
       {/* Logo */}
       <div className="p-6 border-b border-sidebar-border/50">
         <Link href="/admin" className="flex items-center gap-3 hover-lift">
-          <img src="/logoo-transparent.png" alt="Mama Sam Admin" className="h-16 w-auto object-contain rounded-full shadow-sm" />
+          <img src="/logoo.png" alt="Mama Sam Admin" className="h-16 w-auto object-contain rounded-full shadow-sm" />
         </Link>
       </div>
 
@@ -90,3 +90,4 @@ export function AdminSidebar() {
     </aside>
   );
 }
+
