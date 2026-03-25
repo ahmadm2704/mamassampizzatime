@@ -119,8 +119,8 @@ export default function Home() {
             {/* Right Visual */}
             <div className="relative h-96 md:h-full min-h-96 animate-fade-in-down">
               <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-2xl group">
-                <div className="w-full h-full bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center text-9xl animate-float">
-                  🍕
+                <div className="w-full h-full bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center animate-float">
+                  <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Authentic Italian Pizza" className="w-full h-full object-cover" />
                 </div>
               </div>
               <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-secondary/20 rounded-full blur-2xl opacity-50"></div>
@@ -277,4 +277,7 @@ export default function Home() {
     </div>
   );
 }
+
+
+
 

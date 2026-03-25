@@ -37,11 +37,8 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="h-96 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl border border-border flex items-center justify-center">
-            <div className="text-center">
-              <div className="text-6xl mb-2">🍕</div>
-              <p className="text-muted-foreground">Restaurant Photo</p>
-            </div>
+          <div className="h-96 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl border border-border flex items-center justify-center overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Inside Mama Sam's Restaurant" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
           </div>
         </div>
       </section>

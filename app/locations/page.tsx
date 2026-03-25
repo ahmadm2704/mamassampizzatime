@@ -28,10 +28,9 @@ export default function LocationsPage() {
           {locations.map((location) => (
             <div key={location.id} className="bg-card rounded-lg border border-border overflow-hidden hover:shadow-lg transition-all duration-300">
               {/* Image */}
-              <div className="h-48 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                <span className="text-muted-foreground">Location Image</span>
-              </div>
-
+                <div className="h-48 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center overflow-hidden">
+                  <img src="https://images.unsplash.com/photo-1544148103-0773bf10d330?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt={location.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                </div>
               {/* Content */}
               <div className="p-8 space-y-6">
                 <h2 className="text-2xl font-bold text-foreground">{location.name}</h2>
@@ -125,3 +124,4 @@ export default function LocationsPage() {
     </div>
   );
 }
+

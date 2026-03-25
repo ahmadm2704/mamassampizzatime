@@ -68,9 +68,13 @@ export default function CartPage() {
             {items.map((item) => (
               <div key={item.id} className="bg-card rounded-lg border border-border p-6 flex gap-4">
                 {/* Image */}
-                <div className="w-24 h-24 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
-                  <span className="text-muted-foreground">Image</span>
-                </div>
+                  <div className="w-24 h-24 bg-muted rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    {item.image_url ? (
+                      <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-muted-foreground text-xs">Image</span>
+                    )}
+                  </div>
 
                 {/* Details */}
                 <div className="flex-1 min-w-0">
@@ -159,3 +163,7 @@ export default function CartPage() {
     </div>
   );
 }
+
+
+
+
