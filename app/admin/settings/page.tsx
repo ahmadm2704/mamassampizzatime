@@ -1,0 +1,166 @@
+'use client';
+
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Save } from 'lucide-react';
+
+export default function SettingsPage() {
+  const [saved, setSaved] = useState(false);
+  const [settings, setSettings] = useState({
+    siteName: 'Mama Sam Pizza Time',
+    description: 'Authentic Pizza, Fresh Ingredients',
+    phone: '(905) 545-8899',
+    email: 'info@mamasam.com',
+    address: '476 Beach Rd, Hamilton ON L8H 3K7, Canada',
+    currency: 'CAD',
+    timezone: 'America/Toronto',
+  });
+
+  const handleSave = () => {
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  return (
+    <div className="p-8 space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold text-foreground">Settings</h1>
+        <p className="text-muted-foreground mt-1">Manage your restaurant settings and configuration.</p>
+      </div>
+
+      {saved && (
+        <div className="bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded-lg">
+          Settings saved successfully!
+        </div>
+      )}
+
+      <div className="grid lg:grid-cols-2 gap-8">
+        {/* General Settings */}
+        <div className="bg-card rounded-lg border border-border p-8 space-y-6">
+          <h2 className="text-xl font-bold text-foreground">General Settings</h2>
+
+          <div>
+            <label className="text-sm font-medium text-foreground">Site Name</label>
+            <Input
+              value={settings.siteName}
+              onChange={(e) => setSettings({ ...settings, siteName: e.target.value })}
+              className="mt-1"
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium text-foreground">Description</label>
+            <textarea
+              value={settings.description}
+              onChange={(e) => setSettings({ ...settings, description: e.target.value })}
+              className="mt-1 w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground resize-none"
+              rows={3}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium text-foreground">Currency</label>
+            <select className="mt-1 w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground">
+              <option>USD - US Dollar</option>
+              <option>EUR - Euro</option>
+              <option>GBP - British Pound</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="text-sm font-medium text-foreground">Timezone</label>
+            <select
+              value={settings.timezone}
+              onChange={(e) => setSettings({ ...settings, timezone: e.target.value })}
+              className="mt-1 w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
+            >
+              <option>America/Los_Angeles</option>
+              <option>America/New_York</option>
+              <option>Europe/London</option>
+              <option>Europe/Paris</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Contact Information */}
+        <div className="bg-card rounded-lg border border-border p-8 space-y-6">
+          <h2 className="text-xl font-bold text-foreground">Contact Information</h2>
+
+          <div>
+            <label className="text-sm font-medium text-foreground">Phone</label>
+            <Input
+              value={settings.phone}
+              onChange={(e) => setSettings({ ...settings, phone: e.target.value })}
+              className="mt-1"
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium text-foreground">Email</label>
+            <Input
+              type="email"
+              value={settings.email}
+              onChange={(e) => setSettings({ ...settings, email: e.target.value })}
+              className="mt-1"
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium text-foreground">Address</label>
+            <textarea
+              value={settings.address}
+              onChange={(e) => setSettings({ ...settings, address: e.target.value })}
+              className="mt-1 w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground resize-none"
+              rows={3}
+            />
+          </div>
+        </div>
+
+        {/* Social Media */}
+        <div className="bg-card rounded-lg border border-border p-8 space-y-6">
+          <h2 className="text-xl font-bold text-foreground">Social Media</h2>
+
+          <div>
+            <label className="text-sm font-medium text-foreground">Facebook</label>
+            <Input placeholder="https://facebook.com/mamasam" className="mt-1" />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium text-foreground">Instagram</label>
+            <Input placeholder="https://instagram.com/mamasam" className="mt-1" />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium text-foreground">Twitter</label>
+            <Input placeholder="https://twitter.com/mamasam" className="mt-1" />
+          </div>
+        </div>
+
+        {/* Business Hours */}
+        <div className="bg-card rounded-lg border border-border p-8 space-y-6">
+          <h2 className="text-xl font-bold text-foreground">Business Hours</h2>
+
+          {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) => (
+            <div key={day} className="flex gap-4 items-center">
+              <span className="font-medium text-foreground w-24">{day}</span>
+              <Input placeholder="11:00 AM" className="flex-1" />
+              <span className="text-muted-foreground">-</span>
+              <Input placeholder="10:00 PM" className="flex-1" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex justify-end">
+        <Button
+          onClick={handleSave}
+          className="bg-primary hover:bg-primary/90 gap-2"
+        >
+          <Save className="h-4 w-4" />
+          Save Settings
+        </Button>
+      </div>
+    </div>
+  );
+}
