@@ -36,7 +36,7 @@ export function ProductCard({ item, onAddToCart }: ProductCardProps) {
         {/* Badge Container */}
         <div className="absolute top-4 left-4 right-4 flex gap-2 flex-wrap">
           {item.vegetarian && (
-            <span className="inline-flex items-center gap-1 px-3 py-1.5 bg-white/95 rounded-full text-xs font-semibold text-foreground backdrop-blur-sm animate-scale-in">
+            <span className="inline-flex items-center gap-1 px-3 py-1.5 bg-black/80 rounded-full text-xs font-semibold text-white backdrop-blur-sm animate-scale-in">
               ✓ Vegetarian
             </span>
           )}
@@ -78,7 +78,7 @@ export function ProductCard({ item, onAddToCart }: ProductCardProps) {
       {/* Content */}
       <div className="p-6 flex flex-col flex-1">
         <Link href={`/menu/${item.id}`}>
-          <h3 className="heading-md text-foreground hover:text-primary transition-colors duration-300 mb-2 line-clamp-1">
+          <h3 className="heading-md text-white hover:text-primary transition-colors duration-300 mb-2 line-clamp-1">
             {item.name}
           </h3>
         </Link>
@@ -117,3 +117,4 @@ export function ProductCard({ item, onAddToCart }: ProductCardProps) {
     </div>
   );
 }
+

@@ -6,7 +6,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-foreground text-primary-foreground relative overflow-hidden">
+    <footer className="bg-muted text-primary-foreground relative overflow-hidden">
       {/* Background Decoration */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-0 right-0 w-96 h-96 bg-secondary rounded-full blur-3xl"></div>
@@ -23,7 +23,7 @@ export function Footer() {
                 <img src="/logoo.png" alt="Mama Sam Pizza" className="h-24 w-auto object-contain bg-white/5 p-2 rounded-full backdrop-blur-sm drop-shadow-md" />
               </div>
               <p className="text-sm text-primary-foreground/70 leading-relaxed">
-                Crafting authentic Italian pizza with passion since 2010. Every slice tells a story of tradition and quality.
+                Crafting authentic premium pizza with passion since 2010. Every slice tells a story of tradition and quality.
               </p>
               <div className="flex gap-4 pt-4">
                 <a
@@ -152,7 +152,7 @@ export function Footer() {
               © {currentYear} Mama Sam Pizza. Crafted with care and authenticity.
             </p>
             <p className="text-sm text-secondary font-semibold">
-              Authentic Italian Excellence 🇮🇹
+              Authentic Premium Excellence
             </p>
           </div>
         </div>
@@ -160,4 +160,9 @@ export function Footer() {
     </footer>
   );
 }
+
+
+
+
+
 
