@@ -18,7 +18,25 @@ export function useMenuItems() {
           .order('display_order', { ascending: true });
 
         if (err) throw err;
-        setItems(data || []);
+        
+        const processedData = (data || []).map(item => {
+          if (item.description?.startsWith('JSON_METADATA:')) {
+            try {
+              const jsonStr = item.description.replace('JSON_METADATA:', '');
+              const parsed = JSON.parse(jsonStr);
+              return {
+                ...item,
+                metadata: parsed,
+                description: parsed.real_description || 'Delicious fresh pizza made with premium ingredients.'
+              };
+            } catch (e) {
+              return item;
+            }
+          }
+          return item;
+        });
+
+        setItems(processedData as MenuItem[]);
         setError(null);
       } catch (err: any) {
       setError(err instanceof Error ? err : new Error(err?.message || 'Unknown error'));

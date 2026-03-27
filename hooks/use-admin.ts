@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
-import { MenuItem, Order, User } from '@/lib/types';
+import { MenuItem, Order } from '@/lib/types';
 
 export function useAdminDashboard() {
   const [stats, setStats] = useState({
@@ -116,14 +116,29 @@ export function useAdminMenu() {
       .order('display_order', { ascending: true });
     
     if (data) {
-      setMenuItems(data.map((m: any) => ({
-        ...m,
-        category: m.categories?.name || 'Uncategorized',
-        available: m.is_available,
-        prepTime: m.prep_time,
-        vegetarian: m.is_vegetarian,
-        spicy: m.is_spicy
-      })));
+      setMenuItems(data.map((m: any) => {
+        let metadata = (m as any).metadata || {};
+        let description = m.description;
+
+        if (description?.startsWith('JSON_METADATA:')) {
+          try {
+            const jsonStr = description.replace('JSON_METADATA:', '');
+            metadata = JSON.parse(jsonStr);
+            description = metadata.real_description || 'Delicious fresh pizza made with premium ingredients.';
+          } catch (e) {}
+        }
+
+        return {
+          ...m,
+          metadata,
+          description,
+          category: m.categories?.name || 'Uncategorized',
+          available: m.is_available,
+          prepTime: m.prep_time,
+          vegetarian: m.is_vegetarian,
+          spicy: m.is_spicy
+        };
+      }));
     }
     setLoading(false);
   }, []);
@@ -136,7 +151,15 @@ export function useAdminMenu() {
     if (item.id) {
       await supabase.from('menu_items').update(item).eq('id', item.id);
     } else {
-      await supabase.from('menu_items').insert([item]);
+      // Find highest display_order in the same category so new items go to the bottom
+      const { data: existing } = await supabase
+        .from('menu_items')
+        .select('display_order')
+        .eq('category_id', item.category_id)
+        .order('display_order', { ascending: false })
+        .limit(1);
+      const maxOrder = existing?.[0]?.display_order ?? 0;
+      await supabase.from('menu_items').insert([{ ...item, display_order: maxOrder + 1 }]);
     }
     fetchMenu();
   };

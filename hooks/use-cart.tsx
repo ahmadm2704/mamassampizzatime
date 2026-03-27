@@ -3,16 +3,20 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 export interface CartItem {
-  id: string;
+  id: string; // Composite ID: menuItemId + size + customization string
+  menuItemId: string;
   name: string;
   price: number;
   quantity: number;
+  size?: string;
+  customization?: any;
+  options?: any[];
   image_url?: string;
 }
 
 interface CartContextType {
   items: CartItem[];
-  addToCart: (item: any) => void;
+  addToCart: (item: any, size?: string, customization?: any, quantity?: number, price?: number) => void;
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
@@ -44,17 +48,33 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [items, isLoaded]);
 
-  const addToCart = (item: any) => {
+  const addToCart = (item: any, size?: string, customization?: any, quantity: number = 1, price?: number) => {
+    const compositeId = `${item.id}${size ? '-' + size : ''}${customization ? '-' + JSON.stringify(customization) : ''}`;
+    
+    // Use price if provided (from modal), otherwise calculate from sizes or base price
+    const itemPrice = price ?? (size && item.metadata?.sizes 
+      ? item.metadata.sizes.find((s: any) => s.size === size)?.price || item.price 
+      : item.price);
+
     setItems((prev) => {
-      const existing = prev.find((i) => i.id === item.id);
+      const existing = prev.find((i) => i.id === compositeId);
       if (existing) {
         return prev.map((i) =>
-          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+          i.id === compositeId ? { ...i, quantity: i.quantity + quantity } : i
         );
       }
       return [
         ...prev,
-        { id: item.id, name: item.name, price: item.price, quantity: 1, image_url: item.image_url }
+        { 
+          id: compositeId, 
+          menuItemId: item.id,
+          name: item.name, 
+          price: itemPrice, // This should be the calculated price from the modal
+          quantity: quantity, 
+          size,
+          customization,
+          image_url: item.image_url 
+        }
       ];
     });
   };

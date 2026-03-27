@@ -5,11 +5,13 @@ import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/product-card';
+import { PizzaDetailsModal } from '@/components/pizza-details-modal';
 import { useMenuItems } from '@/hooks/use-supabase';
 import { ArrowRight, Clock, Leaf, Star, Zap, Phone } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useCart } from '@/hooks/use-cart';
+import { MenuItem, PizzaCustomization } from '@/lib/types';
 
 export default function Home() {
   const { items: menuItems, loading } = useMenuItems();
@@ -17,6 +19,30 @@ export default function Home() {
   const [categories, setCategories] = useState<any[]>([]);
   const [offers, setOffers] = useState<any[]>([]);
   const [testimonials, setTestimonials] = useState<any[]>([]);
+  
+  // Pizza Modal State
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
+  const [selectedSize, setSelectedSize] = useState<string>('');
+
+  const handleAddToCart = (item: MenuItem, size?: string) => {
+    if (size) {
+      setSelectedItem(item);
+      setSelectedSize(size);
+      setIsModalOpen(true);
+    } else {
+      addToCart(item);
+      alert(`${item.name} added to cart!`);
+    }
+  };
+
+  const confirmAddToCart = (customization: PizzaCustomization, quantity: number, price: number) => {
+    if (selectedItem) {
+      addToCart(selectedItem, selectedSize, customization, quantity, price);
+      setIsModalOpen(false);
+      alert(`${selectedItem.name} (${selectedSize}) added to cart!`);
+    }
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -191,7 +217,7 @@ export default function Home() {
                 <div className="grid md:grid-cols-4 sm:grid-cols-2 gap-6">
                   {items.slice(0, 4).map((item, idx) => (
                     <div key={item.id} className="animate-fade-in-up" style={{ animationDelay: `${idx * 0.1}s` }}>
-                      <ProductCard item={item} onAddToCart={(item) => { addToCart(item); alert(`${item.name} added to cart!`); }} />
+                      <ProductCard item={item as any} onAddToCart={handleAddToCart} />
                     </div>
                   ))}
                 </div>
@@ -209,6 +235,15 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Pizza Details Modal */}
+      <PizzaDetailsModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        item={selectedItem}
+        size={selectedSize}
+        onConfirm={confirmAddToCart}
+      />
 
       {/* Testimonials Section */}
       <section className="py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary via-primary/95 to-primary/90 text-primary-foreground relative overflow-hidden">

@@ -1,25 +1,67 @@
 // Menu Items
 export interface MenuItem {
   id: string;
+  category_id?: string;
   name: string;
   description: string;
-  category: 'Pizza' | 'Pasta' | 'Appetizer' | 'Salad' | 'Dessert' | 'Beverage';
+  category: 'Pizza' | 'Pasta' | 'Appetizer' | 'Salad' | 'Dessert' | 'Beverage' | string;
   price: number;
-  image: string;
+  image?: string;
+  image_url?: string | null;
   available: boolean;
   prepTime: number; // minutes
+  is_available?: boolean;
+  is_vegetarian?: boolean;
+  is_spicy?: boolean;
   spicy: boolean;
   vegetarian: boolean;
   vegan: boolean;
+  metadata?: {
+    customizable?: boolean;
+    sizes?: Array<{ size: string; price: number }>;
+  };
+}
+
+export interface CrustOption {
+  name: string;
+  price?: number;
+}
+
+export interface SauceOption {
+  name: string;
+  price?: number;
+}
+
+export type ToppingPlacement = 'none' | 'left' | 'right' | 'whole' | 'double';
+
+export interface ToppingOption {
+  id: string;
+  name: string;
+  category: 'Meat' | 'Halal' | 'Veggie' | 'Free' | 'Cheese';
+  price?: number;
+}
+
+export interface PizzaCustomization {
+  crust: string;
+  sauce: string;
+  toppings: Array<{
+    toppingId: string;
+    placement: ToppingPlacement;
+  }>;
+  additionalOptions?: string[];
 }
 
 // Cart
 export interface CartItem {
-  id: string;
+  id: string; // Composite ID: menuItemId + size + options string
   menuItemId: string;
-  quantity: number;
-  specialInstructions?: string;
+  name: string;
   price: number;
+  quantity: number;
+  size?: string;
+  customization?: PizzaCustomization;
+  options?: any[]; // For other items
+  image_url?: string;
 }
 
 // Orders

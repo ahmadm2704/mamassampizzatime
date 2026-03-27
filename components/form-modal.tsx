@@ -8,7 +8,7 @@ interface FormModalProps {
   isOpen: boolean;
   title: string;
   onClose: () => void;
-  onSubmit: (e: React.FormEvent) => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   isLoading?: boolean;
   children: ReactNode;
 }
@@ -23,15 +23,20 @@ export function FormModal({
 }: FormModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
-        <DialogHeader>
+      <DialogContent className="max-w-2xl flex flex-col max-h-[90vh] p-0 gap-0">
+        {/* Sticky Header */}
+        <DialogHeader className="px-6 py-4 border-b border-border shrink-0">
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={onSubmit} className="space-y-4">
-          {children}
+        <form onSubmit={onSubmit as React.FormEventHandler<HTMLFormElement>} className="flex flex-col flex-1 min-h-0">
+          {/* Scrollable body */}
+          <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+            {children}
+          </div>
 
-          <DialogFooter className="gap-2">
+          {/* Sticky Footer */}
+          <DialogFooter className="px-6 py-4 border-t border-border shrink-0 gap-2">
             <Button
               type="button"
               variant="outline"

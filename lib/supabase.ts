@@ -46,6 +46,10 @@ export interface MenuItem {
   is_available: boolean;
   image_url: string | null;
   display_order: number;
+  metadata?: {
+    customizable?: boolean;
+    sizes?: Array<{ size: string; price: number }>;
+  };
   created_at: string;
   updated_at: string;
 }

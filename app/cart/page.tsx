@@ -78,10 +78,53 @@ export default function CartPage() {
 
                 {/* Details */}
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-lg text-foreground mb-1">{item.name}</h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    ${item.price.toFixed(2)} each
-                  </p>
+                  <div className="flex items-start justify-between gap-2 mb-1">
+                    <h3 className="font-bold text-lg text-foreground truncate">{item.name}</h3>
+                    {item.size && (
+                      <span className="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded uppercase tracking-wider shrink-0">
+                        {item.size}
+                      </span>
+                    )}
+                  </div>
+                  
+                  {item.customization ? (
+                    <div className="space-y-1 mb-4">
+                      <p className="text-xs text-muted-foreground flex gap-2">
+                        <span className="font-semibold text-foreground/70">Crust:</span> {item.customization.crust}
+                      </p>
+                      <p className="text-xs text-muted-foreground flex gap-2">
+                        <span className="font-semibold text-foreground/70">Sauce:</span> {item.customization.sauce}
+                      </p>
+                      {item.customization.toppings && item.customization.toppings.length > 0 && (
+                        <div className="text-xs text-muted-foreground">
+                          <span className="font-semibold text-foreground/70 block mb-1">Toppings:</span>
+                          <div className="flex flex-wrap gap-1.5">
+                            {item.customization.toppings.map((t: any, i: number) => (
+                              <span key={i} className="px-2 py-0.5 bg-muted rounded border border-border/50 text-[10px]">
+                                {t.toppingId.replace(/_/g, ' ')} ({t.placement})
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {item.customization.additionalOptions && item.customization.additionalOptions.length > 0 && (
+                        <div className="text-xs text-muted-foreground">
+                          <span className="font-semibold text-foreground/70 block mb-1">Options:</span>
+                          <div className="flex flex-wrap gap-1.5">
+                            {item.customization.additionalOptions.map((opt: string, i: number) => (
+                              <span key={i} className="px-2 py-0.5 bg-yellow-500/10 text-yellow-700 rounded border border-yellow-500/20 text-[10px] font-medium">
+                                {opt}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-muted-foreground mb-4">
+                      ${item.price.toFixed(2)} each
+                    </p>
+                  )}
 
                   {/* Quantity Control */}
                   <div className="flex items-center gap-2">
