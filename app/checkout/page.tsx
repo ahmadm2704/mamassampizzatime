@@ -74,12 +74,31 @@ export default function CheckoutPage() {
       if (orderError) throw orderError;
 
       // 2. Create order items
-      const orderItems = items.map(item => ({
-        order_id: orderData.id,
-        menu_item_id: item.id,
-        quantity: item.quantity,
-        unit_price: item.price,
-      }));
+      const orderItems = items.map(item => {
+        let itemInstructions = [];
+        if (item.size) itemInstructions.push(`Size: ${item.size}`);
+        if (item.customization) {
+          if (item.customization.crust) itemInstructions.push(`Crust: ${item.customization.crust}`);
+          if (item.customization.sauce) itemInstructions.push(`Sauce: ${item.customization.sauce}`);
+          if (item.customization.toppings?.length) {
+            itemInstructions.push(`Toppings: ${item.customization.toppings.map((t: any) => `${t.toppingId.replace(/_/g, ' ')} (${t.placement})`).join(', ')}`);
+          }
+          if (item.customization.additionalOptions?.length) {
+            itemInstructions.push(`Options: ${item.customization.additionalOptions.join(', ')}`);
+          }
+        }
+        
+        // Clean composite id to strict UUID if menuItemId is missing
+        const cleanMenuItemId = item.menuItemId || item.id.split('-')[0];
+
+        return {
+          order_id: orderData.id,
+          menu_item_id: cleanMenuItemId,
+          quantity: item.quantity,
+          unit_price: item.price,
+          special_instructions: itemInstructions.length > 0 ? itemInstructions.join('\n') : null
+        };
+      });
 
       const { error: itemsError } = await supabase
         .from('order_items')

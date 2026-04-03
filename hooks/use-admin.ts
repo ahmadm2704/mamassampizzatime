@@ -46,7 +46,7 @@ export function useAdminOrders() {
     setLoading(true);
     const { data } = await supabase
       .from('orders')
-      .select('*, users(full_name, phone)')
+      .select('*, users(full_name, phone), order_items(*, menu_items(name))')
       .order('created_at', { ascending: false });
 
     if (data) {
@@ -56,7 +56,9 @@ export function useAdminOrders() {
         customerPhone: o.users?.phone || o.phone || 'N/A',
         totalAmount: o.total,
         orderType: o.delivery_type,
-        estimatedTime: o.estimated_time || 30
+        estimatedTime: o.estimated_time || 30,
+        itemsCount: o.order_items?.length || 0,
+        itemsList: o.order_items?.map((i: any) => `${i.quantity}x ${i.menu_items?.name || 'Item'}`).join(', ') || ''
       })));
     }
     setLoading(false);
