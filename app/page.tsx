@@ -75,8 +75,52 @@ export default function Home() {
     fetchData();
   }, []);
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Restaurant',
+    name: 'Mama Sam Pizza Time',
+    image: 'https://mamassampizzatime.vercel.app/logoo.png',
+    '@id': 'https://mamassampizzatime.vercel.app',
+    url: 'https://mamassampizzatime.vercel.app',
+    telephone: '+1-905-545-8899',
+    priceRange: '$$',
+    menu: 'https://mamassampizzatime.vercel.app/menu',
+    servesCuisine: ['Pizza', 'Italian', 'Canadian'],
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '476 Beach Rd',
+      addressLocality: 'Hamilton',
+      addressRegion: 'ON',
+      postalCode: 'L8H 3K7',
+      addressCountry: 'CA'
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 43.2500,
+      longitude: -79.8661
+    },
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+        opens: '11:00',
+        closes: '22:00'
+      }
+    ],
+    sameAs: [
+      'https://www.facebook.com/mamasampizza',
+      'https://www.instagram.com/mamasampizza'
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      {/* Search Engine Optimization Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      
       <Navbar />
 
       {/* Hero Section */}
@@ -98,11 +142,11 @@ export default function Home() {
               <h1 className="heading-hero">
                 <span className="text-foreground">Authentic</span>
                 <br />
-                <span className="text-primary">Pizza Perfection</span>
+                <span className="text-primary">Pizza in Hamilton</span>
               </h1>
 
               <p className="text-body-lg text-muted-foreground max-w-lg leading-relaxed">
-                Handcrafted wood-fired pizzas using our signature recipes and the finest imported ingredients. Every bite is an experience of authentic flavor and passion.
+                Handcrafted wood-fired pizzas using our signature recipes and the finest imported ingredients right here in Hamilton, Canada. Every bite is an experience of authentic flavor and passion.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-6">
