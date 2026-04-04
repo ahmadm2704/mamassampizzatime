@@ -4,11 +4,11 @@ import { DataTable } from '@/components/data-table';
 import { Button } from '@/components/ui/button';
 import { useAdminOrders } from '@/hooks/use-admin';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Eye, MapPin, Phone, User, Clock, UtensilsCrossed } from 'lucide-react';
-import { useState } from 'react';
+import { Eye, MapPin, Phone, User, Clock, UtensilsCrossed, BellRing, Calendar } from 'lucide-react';
+import { useState, useMemo } from 'react';
 
 export default function OrdersPage() {
-  const { orders, loading, updateOrderStatus } = useAdminOrders();
+  const { orders, loading, updateOrderStatus, testNotification, deleteOrder } = useAdminOrders();
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -16,10 +16,29 @@ export default function OrdersPage() {
     updateOrderStatus(orderId, newStatus);
   };
 
+  const handleDeleteOrder = async (order: any) => {
+    if (confirm(`Are you sure you want to completely delete order #${order.order_number || order.id.slice(0, 8)}? This action cannot be undone.`)) {
+      await deleteOrder(order.id);
+    }
+  };
+
   const openOrderDetails = (order: any) => {
     setSelectedOrder(order);
     setIsModalOpen(true);
   };
+
+  const groupedOrders = useMemo(() => {
+    return orders.reduce((group: any, order: any) => {
+      const date = new Date(order.created_at).toLocaleDateString('en-US', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+      if (!group[date]) {
+        group[date] = [];
+      }
+      group[date].push(order);
+      return group;
+    }, {} as Record<string, any[]>);
+  }, [orders]);
 
   const columns = [
     { header: 'Order ID', key: 'id' as const, render: (value: any) => value.slice(0, 8) },
@@ -84,20 +103,52 @@ export default function OrdersPage() {
 
   return (
     <div className="p-8 space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground">Orders</h1>
-        <p className="text-muted-foreground mt-1">Manage and track all customer orders.</p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">Orders</h1>
+          <p className="text-muted-foreground mt-1">Manage and track all customer orders.</p>
+        </div>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={testNotification}
+          className="gap-2"
+          title="Enable/Test order notification sound"
+        >
+          <BellRing className="w-4 h-4" />
+          Test Alert Sound
+        </Button>
       </div>
 
       {loading ? (
         <p>Loading orders...</p>
+      ) : Object.keys(groupedOrders).length === 0 ? (
+        <div className="text-center py-12 text-muted-foreground">No orders yet.</div>
       ) : (
-        <DataTable
-          columns={columns}
-          data={orders}
-          keyField="id"
-          onEdit={openOrderDetails}
-        />
+        <div className="space-y-12">
+          {Object.entries(groupedOrders).map(([date, dayOrders]: [string, any]) => (
+            <div key={date} className="bg-card rounded-xl border shadow-sm overflow-hidden">
+              <div className="px-6 py-4 border-b bg-muted/30">
+                <h2 className="text-xl font-semibold text-foreground flex items-center gap-2">
+                  <Calendar className="h-5 w-5 text-primary" /> 
+                  {date === new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) ? 'Today' : date}
+                  <span className="text-sm font-normal text-muted-foreground bg-secondary/20 px-2 py-0.5 rounded-full ml-auto">
+                    {dayOrders.length} Order{dayOrders.length !== 1 ? 's' : ''}
+                  </span>
+                </h2>
+              </div>
+              <div className="p-0">
+                <DataTable
+                  columns={columns}
+                  data={dayOrders}
+                  keyField="id"
+                  onEdit={openOrderDetails}
+                  onDelete={handleDeleteOrder}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
       )}
 
       {/* Order Details Modal */}

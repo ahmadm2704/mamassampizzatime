@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { MenuItem, Order } from '@/lib/types';
 
@@ -41,16 +41,45 @@ export function useAdminDashboard() {
 export function useAdminOrders() {
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const latestOrderTimeRef = useRef<number>(0);
 
-  const fetchOrders = useCallback(async () => {
-    setLoading(true);
+  const playOrderNotification = useCallback(() => {
+    try {
+      const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+      const audioCtx = new AudioContext();
+      
+      for (let i = 0; i < 5; i++) {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime + i);
+        osc.frequency.setValueAtTime(1108.73, audioCtx.currentTime + i + 0.2);
+        
+        gain.gain.setValueAtTime(0, audioCtx.currentTime + i);
+        gain.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + i + 0.1);
+        gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + i + 0.4);
+        
+        osc.start(audioCtx.currentTime + i);
+        osc.stop(audioCtx.currentTime + i + 0.5);
+      }
+    } catch (e) {
+      console.log('Audio notification not supported in this browser', e);
+    }
+  }, []);
+
+  const fetchOrders = useCallback(async (silentRefresh = false) => {
+    if (!silentRefresh) setLoading(true);
     const { data } = await supabase
       .from('orders')
       .select('*, users(full_name, phone), order_items(*, menu_items(name))')
       .order('created_at', { ascending: false });
 
     if (data) {
-      setOrders(data.map((o: any) => ({
+      const formattedOrders = data.map((o: any) => ({
         ...o,
         customerName: o.users?.full_name || (o.special_instructions?.match(/Name: (.*?)(?:\n|$)/)?.[1]) || 'Guest',
         customerPhone: o.users?.phone || o.phone || 'N/A',
@@ -59,21 +88,61 @@ export function useAdminOrders() {
         estimatedTime: o.estimated_time || 30,
         itemsCount: o.order_items?.length || 0,
         itemsList: o.order_items?.map((i: any) => `${i.quantity}x ${i.menu_items?.name || 'Item'}`).join(', ') || ''
-      })));
+      }));
+
+      const topTime = data.length > 0 ? new Date(data[0].created_at).getTime() : 0;
+      
+      // If silently polling and a new order is detected
+      if (silentRefresh && latestOrderTimeRef.current > 0 && topTime > latestOrderTimeRef.current) {
+        playOrderNotification();
+      }
+
+      latestOrderTimeRef.current = topTime;
+      setOrders(formattedOrders);
     }
-    setLoading(false);
-  }, []);
+    if (!silentRefresh) setLoading(false);
+  }, [playOrderNotification]);
 
   useEffect(() => {
     fetchOrders();
+
+    // 1. Automatic Fallback Polling (Every 10 seconds)
+    // This guarantees you get new orders and sound rings WITHOUT needing SQL DB configuration.
+    const pollInterval = setInterval(() => {
+      fetchOrders(true);
+    }, 10000);
+
+    // 2. Realtime WebSocket subscription (Instant)
+    const channel = supabase
+      .channel('public:orders')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'orders' },
+        (payload) => {
+          fetchOrders(true);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      clearInterval(pollInterval);
+      supabase.removeChannel(channel);
+    };
   }, [fetchOrders]);
 
   const updateOrderStatus = async (id: string, status: string) => {
     await supabase.from('orders').update({ status }).eq('id', id);
-    fetchOrders(); // Refresh after update
+    fetchOrders(true);
   };
 
-  return { orders, loading, updateOrderStatus };
+  const deleteOrder = async (id: string) => {
+    // Delete order items first due to foreign key constraints, or if ON DELETE CASCADE is set it handles it auto.
+    // Assuming ON DELETE CASCADE since order_items references orders.
+    await supabase.from('orders').delete().eq('id', id);
+    fetchOrders(true);
+  };
+
+  return { orders, loading, updateOrderStatus, deleteOrder, testNotification: playOrderNotification };
 }
 
 export function useAdminCustomers() {

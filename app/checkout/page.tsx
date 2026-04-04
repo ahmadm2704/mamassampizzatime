@@ -225,10 +225,10 @@ export default function CheckoutPage() {
                       <label className="text-body-sm font-semibold text-foreground mb-2 block">Full Name *</label>
                       <Input
                         type="text"
-                        placeholder="John Doe"
+                        placeholder="Enter your full name"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="input-professional"
+                        className="input-professional text-black dark:text-white"
                         required
                       />
                     </div>
@@ -236,10 +236,10 @@ export default function CheckoutPage() {
                       <label className="text-body-sm font-semibold text-foreground mb-2 block">Email *</label>
                       <Input
                         type="email"
-                        placeholder="john@example.com"
+                        placeholder="your.email@example.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="input-professional"
+                        className="input-professional text-black dark:text-white"
                         required
                       />
                     </div>
@@ -247,10 +247,10 @@ export default function CheckoutPage() {
                       <label className="text-body-sm font-semibold text-foreground mb-2 block">Phone *</label>
                       <Input
                         type="tel"
-                        placeholder="+1 (905) 545-8899"
+                        placeholder="e.g. +1 (555) 123-4567"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="input-professional"
+                        className="input-professional text-black dark:text-white"
                         required
                       />
                     </div>
@@ -276,10 +276,10 @@ export default function CheckoutPage() {
                         <label className="text-body-sm font-semibold text-foreground mb-2 block">Street Address *</label>
                         <Input
                           type="text"
-                          placeholder="123 Main St"
+                          placeholder="Your street address"
                           value={formData.address}
                           onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                          className="input-professional"
+                          className="input-professional text-black dark:text-white"
                           required
                         />
                       </div>
@@ -288,10 +288,10 @@ export default function CheckoutPage() {
                           <label className="text-body-sm font-semibold text-foreground mb-2 block">City *</label>
                           <Input
                             type="text"
-                            placeholder="New York"
+                            placeholder="Your city"
                             value={formData.city}
                             onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                            className="input-professional"
+                            className="input-professional text-black dark:text-white"
                             required
                           />
                         </div>
@@ -299,10 +299,10 @@ export default function CheckoutPage() {
                           <label className="text-body-sm font-semibold text-foreground mb-2 block">Zip Code *</label>
                           <Input
                             type="text"
-                            placeholder="10001"
+                            placeholder="Postal code"
                             value={formData.zipCode}
                             onChange={(e) => setFormData({ ...formData, zipCode: e.target.value })}
-                            className="input-professional"
+                            className="input-professional text-black dark:text-white"
                             required
                           />
                         </div>
@@ -316,7 +316,7 @@ export default function CheckoutPage() {
                       placeholder="Any special requests? (e.g., extra cheese, no onions, etc.)"
                       value={formData.specialInstructions}
                       onChange={(e) => setFormData({ ...formData, specialInstructions: e.target.value })}
-                      className="input-professional w-full p-3 border rounded-md resize-none h-24 mt-1 bg-background"
+                      className="input-professional w-full p-3 border rounded-md resize-none h-24 mt-1 bg-background text-black dark:text-white"
                     />
                   </div>
 
