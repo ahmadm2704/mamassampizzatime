@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/product-card';
 import { PizzaDetailsModal } from '@/components/pizza-details-modal';
 import { useMenuItems } from '@/hooks/use-supabase';
-import { ArrowRight, Clock, Leaf, Star, Zap, Phone } from 'lucide-react';
+import { ArrowRight, Zap, Phone } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useCart } from '@/hooks/use-cart';
@@ -18,7 +18,6 @@ export default function Home() {
   const { addToCart } = useCart();
   const [categories, setCategories] = useState<any[]>([]);
   const [offers, setOffers] = useState<any[]>([]);
-  const [testimonials, setTestimonials] = useState<any[]>([]);
   
   // Pizza Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -49,6 +48,13 @@ export default function Home() {
       // Fetch categories
       const { data: catData } = await supabase.from('categories').select('*').eq('is_active', true).order('display_order');
       if (catData) setCategories(catData);
+      else {
+        // Fallback for visual demonstration if DB fails
+        setCategories([
+          { 'id': '1', 'name': 'Classic Pizzas', 'display_order': 1 },
+          { 'id': '2', 'name': 'Premium Pizzas', 'display_order': 2 }
+        ]);
+      }
 
       // Fetch offers
       const { data: offerData } = await supabase.from('offers').select('*').eq('is_active', true).limit(3);
@@ -58,182 +64,96 @@ export default function Home() {
           discount: o.discount_value,
           discountType: o.discount_type
         })));
-      }
-
-      // Fetch testimonials
-      const { data: testData } = await supabase.from('testimonials').select('*').eq('is_approved', true).limit(3);
-      if (testData && testData.length > 0) {
-        setTestimonials(testData);
       } else {
-        setTestimonials([
-          { id: '1', rating: 5, content: 'Amazing pizza!', customerName: 'John Doe' },
-          { id: '2', rating: 5, content: 'Best in town.', customerName: 'Jane Smith' },
-          { id: '3', rating: 4, content: 'Very authentic.', customerName: 'Mike Johnson' }
+        setOffers([
+           { id: '1', title: 'Weekend Special', discount: 20, discountType: 'percentage', description: 'Off all Premium Pizzas' },
+           { id: '2', title: 'Lunch Combo', discount: 5, discountType: 'fixed', description: 'Medium pizza + 2 drinks' }
         ]);
       }
     }
     fetchData();
   }, []);
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Restaurant',
-    name: 'Mama Sam Pizza Time',
-    image: 'https://mamassampizzatime.vercel.app/logoo.png',
-    '@id': 'https://mamassampizzatime.vercel.app',
-    url: 'https://mamassampizzatime.vercel.app',
-    telephone: '+1-905-545-8899',
-    priceRange: '$$',
-    menu: 'https://mamassampizzatime.vercel.app/menu',
-    servesCuisine: ['Pizza', 'Italian', 'Canadian'],
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: '476 Beach Rd',
-      addressLocality: 'Hamilton',
-      addressRegion: 'ON',
-      postalCode: 'L8H 3K7',
-      addressCountry: 'CA'
-    },
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: 43.2500,
-      longitude: -79.8661
-    },
-    openingHoursSpecification: [
-      {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-        opens: '11:00',
-        closes: '22:00'
-      }
-    ],
-    sameAs: [
-      'https://www.facebook.com/mamasampizza',
-      'https://www.instagram.com/mamasampizza'
-    ]
-  };
-
   return (
-    <div className="min-h-screen bg-background">
-      {/* Search Engine Optimization Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+    <div className="min-h-screen bg-background pb-20 overflow-x-hidden relative">
       
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-b from-background via-muted/20 to-background">
-        <div className="absolute inset-0 opacity-3">
-          <div className="absolute top-20 right-10 w-72 h-72 bg-secondary/20 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 left-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
-        </div>
+      <section className="relative w-full mx-auto pt-24 pb-20 px-4 flex flex-col items-center justify-center text-center">
+        
+        <div className="animate-fade-in-up flex flex-col items-center z-20 mb-8 max-w-4xl">
+          {/* Changed Ribbon Banner back to standard red background, readable text */}
+          <div className="bg-[#c92228] text-white py-6 px-12 md:px-24 mb-6 shadow-xl border-y-4 border-[#8b0000]" style={{position: 'relative'}}>
+            {/* Visual ribbon tails */}
+            <div className="absolute top-2 -left-6 border-[25px] border-[#8b0000] border-l-transparent -z-10 bottom-2" />
+            <div className="absolute top-2 -right-6 border-[25px] border-[#8b0000] border-r-transparent -z-10 bottom-2" />
+            
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight" style={{ fontFamily: 'Playfair Display, serif', textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}>
+              MAMA' SAM'S PIZZA
+            </h1>
+          </div>
+          
+          <p className="text-xl md:text-2xl font-bold tracking-[0.2em] text-[#8b0000] uppercase font-sans mt-2 mb-8">
+            Fresh • Hot • Delicious
+          </p>
 
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            {/* Left Content */}
-            <div className="space-y-10 animate-fade-in-up">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 border border-secondary/20">
-                <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Est. 2010</span>
-                <span className="text-xs text-muted-foreground">Authentic Premium Craftsmanship</span>
-              </div>
+          <p className="text-lg text-[#2b1f1a] bg-white/60 p-4 rounded-xl border border-[#e0d0b8] max-w-2xl mx-auto shadow-sm backdrop-blur-sm">
+            Handcrafted wood-fired pizzas using our signature recipes and the finest imported ingredients right here in Hamilton, Canada.
+          </p>
 
-              <h1 className="heading-hero">
-                <span className="text-foreground">Authentic</span>
-                <br />
-                <span className="text-primary">Pizza in Hamilton</span>
-              </h1>
-
-              <p className="text-body-lg text-muted-foreground max-w-lg leading-relaxed">
-                Handcrafted wood-fired pizzas using our signature recipes and the finest imported ingredients right here in Hamilton, Canada. Every bite is an experience of authentic flavor and passion.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 pt-6">
-                <Link href="/menu" className="group">
-                  <Button size="lg" className="btn-primary w-full sm:w-auto shadow-lg text-base hover-lift">
-                    Explore Menu
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
-                <Link href="/reservations">
-                  <Button size="lg" className="btn-outline w-full sm:w-auto text-base hover-lift">
-                    Reserve Table
-                  </Button>
-                </Link>
-              </div>
-
-              {/* Quick Info */}
-              <div className="grid grid-cols-2 gap-6 pt-8 border-t border-border/50">
-                <div className="space-y-2 group">
-                  <div className="flex items-center gap-3 text-secondary font-semibold text-sm">
-                    <div className="p-2 bg-secondary/10 rounded-lg group-hover:bg-secondary/20 transition-colors">
-                      <Clock className="h-4 w-4" />
-                    </div>
-                    Delivery
-                  </div>
-                  <p className="text-2xl font-semibold text-foreground">30-45 min</p>
-                </div>
-                <div className="space-y-2 group">
-                  <div className="flex items-center gap-3 text-accent font-semibold text-sm">
-                    <div className="p-2 bg-accent/10 rounded-lg group-hover:bg-accent/20 transition-colors">
-                      <Leaf className="h-4 w-4" />
-                    </div>
-                    Sourced
-                  </div>
-                  <p className="text-2xl font-semibold text-foreground">100% Fresh</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Visual */}
-            <div className="relative h-96 md:h-full min-h-96 animate-fade-in-down">
-              <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-2xl group">
-                <div className="w-full h-full bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center animate-float">
-                  <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Authentic Premium Pizza" className="w-full h-full object-cover" />
-                </div>
-              </div>
-              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-secondary/20 rounded-full blur-2xl opacity-50"></div>
-            </div>
+          <div className="flex gap-4 mt-10">
+            <Link href="#menu">
+              <Button className="bg-[#c92228] hover:bg-[#8b0000] text-white px-8 py-6 text-lg font-bold shadow-lg border-b-4 border-[#8b0000] active:border-b-0 active:translate-y-1 transition-all uppercase tracking-wide rounded-md">
+                Order Now
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
 
       {/* Special Offers Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16 animate-fade-in-up">
-            <p className="text-xs uppercase tracking-widest text-secondary font-semibold mb-4">Limited Time Offers</p>
-            <h2 className="heading-lg text-foreground mb-4">Exclusive Deals for You</h2>
-            <p className="text-body-lg text-muted-foreground max-w-2xl mx-auto">Indulge in our specially curated offers designed for pizza lovers</p>
-          </div>
+      {offers.length > 0 && (
+        <section className="py-16 px-4 bg-[#f3ede1] border-y-2 border-[#e0d0b8]">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12 animate-fade-in-up">
+              <h2 className="text-3xl md:text-4xl font-bold text-[#2b1f1a] uppercase tracking-wide" style={{ fontFamily: 'Playfair Display, serif' }}>
+                Exclusive Deals for You
+              </h2>
+              <div className="w-24 h-1 bg-[#c92228] mx-auto mt-4 rounded-full" />
+            </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {offers.slice(0, 3).map((offer, idx) => (
-              <div
-                key={offer.id}
-                className="card-premium rounded-xl group hover-lift animate-fade-in-up"
-                style={{ animationDelay: `${idx * 0.15}s` }}
-              >
-                <div className="flex items-start justify-between mb-6">
-                  <div className="flex-1">
-                    <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold mb-2">{offer.title}</p>
-                    <h3 className="heading-md text-foreground">{offer.discount}{offer.discountType === 'percentage' ? '%' : '$'}</h3>
-                    <p className="text-body-sm text-muted-foreground mt-2">{offer.description}</p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {offers.slice(0, 3).map((offer, idx) => (
+                <div
+                  key={offer.id}
+                  className="bg-white border-2 border-[#e0d0b8] rounded-xl p-8 hover:-translate-y-2 transition-transform shadow-md animate-fade-in-up"
+                  style={{ animationDelay: `${idx * 0.15}s` }}
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex-1">
+                      <p className="text-xs uppercase tracking-widest text-[#1f6b3b] font-bold mb-2">{offer.title}</p>
+                      <h3 className="text-5xl font-black text-[#c92228] font-sans">
+                        {offer.discount}{offer.discountType === 'percentage' ? '%' : '$'}
+                      </h3>
+                      <p className="text-base text-[#785a46] mt-3 font-medium">{offer.description}</p>
+                    </div>
+                    <div className="p-3 bg-[#f3ede1] rounded-full">
+                      <Zap className="h-6 w-6 text-[#eab308]" />
+                    </div>
                   </div>
-                  <div className="p-3 bg-secondary/10 rounded-lg group-hover:scale-110 transition-transform">
-                    <Zap className="h-5 w-5 text-secondary" />
-                  </div>
+                  <Button className="w-full bg-[#1f6b3b] hover:bg-[#114022] text-white font-bold uppercase tracking-wider rounded-md mt-4 border-b-4 border-[#114022] active:border-b-0 active:translate-y-1">
+                    Claim Offer
+                  </Button>
                 </div>
-                <Button className="btn-secondary w-full">View Offer</Button>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* Dynamic Categories & Menu */}
-      <section className="py-28 px-4 sm:px-6 lg:px-8">
+      {/* Menu Grid Section */}
+      <section id="menu" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {categories.map((category) => {
             const items = menuItems.filter(m => m.category_id === category.id).map(m => ({
@@ -246,20 +166,22 @@ export default function Home() {
               spicy: m.is_spicy
             }));
 
-            if (items.length === 0) return null;
+            // Fallback content if DB fails or empty category to show the aesthetic
+            const displayItems = items.length > 0 ? items : [
+              { id: `demo1-${category.id}`, name: `Classic ${category.name}`, description: 'Cheese, Sauce, Quality Ingredients', price: 15.99, image_url: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80', category: category.name },
+              { id: `demo2-${category.id}`, name: `Spicy ${category.name}`, description: 'Hot peppers, Onions, Tomatoes', price: 17.99, image_url: 'https://images.unsplash.com/photo-1544982503-9f98ddc48717?w=400&q=80', spicy: true, category: category.name }
+            ];
 
             return (
               <div key={category.id} className="mb-20 animate-fade-in-up">
-                <div className="mb-10">
-                  <p className="text-xs uppercase tracking-widest text-secondary font-semibold mb-2">Explore</p>
-                  <h2 className="heading-lg text-foreground uppercase">{category.name} MENU</h2>
-                  {category.description && (
-                    <p className="text-body-lg text-muted-foreground mt-2">{category.description}</p>
-                  )}
+                <div className="mb-10 text-center md:text-left flex flex-col md:flex-row items-center justify-between border-b-2 border-[#e0d0b8] pb-4">
+                  <h2 className="text-3xl md:text-4xl font-bold text-[#c92228] uppercase tracking-wider" style={{ fontFamily: 'Playfair Display, serif' }}>
+                    {category.name}
+                  </h2>
                 </div>
 
-                <div className="grid md:grid-cols-4 sm:grid-cols-2 gap-6">
-                  {items.slice(0, 4).map((item, idx) => (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {displayItems.slice(0, 4).map((item, idx) => (
                     <div key={item.id} className="animate-fade-in-up" style={{ animationDelay: `${idx * 0.1}s` }}>
                       <ProductCard item={item as any} onAddToCart={handleAddToCart} />
                     </div>
@@ -269,11 +191,11 @@ export default function Home() {
             );
           })}
 
-          <div className="flex justify-center mt-16">
+          <div className="flex justify-center mt-12 bg-white/50 py-8 border-y border-[#e0d0b8]">
             <Link href="/menu">
-              <Button className="btn-primary px-8 hover-lift">
-                View Complete Menu
-                <ArrowRight className="ml-2 h-5 w-5" />
+              <Button className="bg-transparent border-2 border-[#c92228] text-[#c92228] hover:bg-[#c92228] hover:text-white px-10 py-6 text-lg font-bold transition-all uppercase tracking-widest rounded-full">
+                View Full Menu
+                <ArrowRight className="ml-3 h-5 w-5" />
               </Button>
             </Link>
           </div>
@@ -288,76 +210,6 @@ export default function Home() {
         size={selectedSize}
         onConfirm={confirmAddToCart}
       />
-
-      {/* Testimonials Section */}
-      <section className="py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary via-primary/95 to-primary/90 text-primary-foreground relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-10 right-20 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-20 animate-fade-in-up">
-            <p className="text-xs uppercase tracking-widest text-primary-foreground/70 font-semibold mb-4">Customer Stories</p>
-            <h2 className="heading-lg text-primary-foreground mb-6">Loved by Our Community</h2>
-            <p className="text-body-lg text-primary-foreground/80 max-w-2xl mx-auto">Join thousands who've discovered the art of Authentic Premium Pizza</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, idx) => (
-              <div
-                key={testimonial.id || idx}
-                className="bg-primary-foreground/10 backdrop-blur-sm rounded-xl p-8 border border-primary-foreground/20 group hover-lift animate-fade-in-up"
-                style={{ animationDelay: `${idx * 0.15}s` }}
-              >
-                <div className="flex gap-1.5 mb-6">
-                  {Array.from({ length: testimonial.rating }).map((_, i) => (
-                    <Star key={i} className="h-5 w-5 fill-accent text-accent" />
-                  ))}
-                </div>
-                <blockquote className="text-body-lg text-primary-foreground/95 italic mb-6 leading-relaxed">
-                  "{testimonial.content}"
-                </blockquote>
-                <p className="font-semibold text-base text-primary-foreground">— {testimonial.customer_name || testimonial.customerName}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="card-premium rounded-2xl p-12 sm:p-16 text-center group hover-lift bg-gradient-to-br from-background to-muted/50 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-40 h-40 bg-secondary/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
-            <div className="relative z-10 animate-fade-in-up">
-              <h2 className="heading-xl text-foreground mb-6">Experience Premium Excellence</h2>
-              <p className="text-body-lg text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-                Reserve your table or place an order now and taste the difference Authentic Premium Pizza can make.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/menu">
-                  <Button size="lg" className="btn-primary px-8 hover-lift">
-                    Order Online Now
-                  </Button>
-                </Link>
-                <Link href="/contact">
-                  <Button size="lg" className="btn-outline px-8 hover-lift">
-                    <Phone className="mr-2 h-5 w-5" />
-                    Call Us
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
     </div>
   );
 }
-
-
-
-
-

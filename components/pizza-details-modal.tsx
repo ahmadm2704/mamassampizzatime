@@ -118,7 +118,7 @@ export function PizzaDetailsModal({ isOpen, onClose, item, size, onConfirm }: Pi
                       <RadioGroupItem value={opt.name} id={`crust-${opt.name}`} className="peer sr-only" />
                       <Label
                         htmlFor={`crust-${opt.name}`}
-                        className="flex items-center justify-between p-4 bg-card border border-border rounded-xl cursor-pointer hover:bg-muted/50 peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/5 transition-all duration-300"
+                        className="flex items-center justify-between p-4 bg-white border border-border rounded-xl cursor-pointer hover:bg-[#f3ede1] peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-[#f3ede1] shadow-sm transition-all duration-300"
                       >
                         <span className="font-semibold">{opt.name}</span>
                         {opt.price && <span className="text-primary font-bold">(+${opt.price})</span>}
@@ -137,7 +137,7 @@ export function PizzaDetailsModal({ isOpen, onClose, item, size, onConfirm }: Pi
                       <RadioGroupItem value={opt.name} id={`sauce-${opt.name}`} className="peer sr-only" />
                       <Label
                         htmlFor={`sauce-${opt.name}`}
-                        className="flex items-center justify-between p-4 bg-card border border-border rounded-xl cursor-pointer hover:bg-muted/50 peer-data-[state=checked]:border-secondary peer-data-[state=checked]:bg-secondary/5 transition-all duration-300"
+                        className="flex items-center justify-between p-4 bg-white border border-border rounded-xl cursor-pointer hover:bg-[#f3ede1] peer-data-[state=checked]:border-secondary peer-data-[state=checked]:bg-[#f3ede1] shadow-sm transition-all duration-300"
                       >
                         <span className="font-semibold truncate mr-2">{opt.name}</span>
                         {opt.price && <span className="text-secondary font-bold shrink-0">(+${opt.price})</span>}
@@ -154,7 +154,7 @@ export function PizzaDetailsModal({ isOpen, onClose, item, size, onConfirm }: Pi
                   {ADDITIONAL_OPTIONS.map((opt) => (
                     <div
                       key={opt.id}
-                      className="flex items-center space-x-3 p-4 bg-card border border-border rounded-xl cursor-pointer hover:bg-muted/50 transition-all duration-300"
+                      className="flex items-center space-x-3 p-4 bg-white border border-border rounded-xl cursor-pointer hover:bg-[#f3ede1] shadow-sm transition-all duration-300"
                       onClick={() => {
                         setAdditionalOptions(prev => 
                           prev.includes(opt.id) ? prev.filter(id => id !== opt.id) : [...prev, opt.id]
@@ -201,7 +201,7 @@ export function PizzaDetailsModal({ isOpen, onClose, item, size, onConfirm }: Pi
                     <TabsContent key={cat} value={cat} className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
                       <div className="grid divide-y divide-border/50 border border-border/50 rounded-2xl overflow-hidden shadow-sm">
                         {TOPPING_OPTIONS.filter(t => t.category === cat).map(topping => (
-                          <div key={topping.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-card hover:bg-muted/20 transition-colors gap-4">
+                          <div key={topping.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-white hover:bg-muted transition-colors gap-4">
                             <span className="font-bold text-foreground text-lg">{topping.name}</span>
                             
                             <div className="flex bg-muted/40 p-1 rounded-full border border-border/40 scale-90 sm:scale-100 origin-right">
@@ -239,7 +239,7 @@ export function PizzaDetailsModal({ isOpen, onClose, item, size, onConfirm }: Pi
         </div>
 
         {/* Footer Section */}
-        <DialogFooter className="sticky bottom-0 bg-background/80 backdrop-blur-xl border-t border-border p-6 sm:justify-between items-center z-50 shadow-[0_-10px_30px_-15px_rgba(0,0,0,0.1)]">
+        <DialogFooter className="sticky bottom-0 bg-[#fcfaf3] border-t-2 border-[#e0d0b8] p-6 sm:justify-between items-center z-50 shadow-[0_-10px_30px_-15px_rgba(0,0,0,0.1)]">
           <div className="flex items-center gap-6 mb-4 sm:mb-0">
             <div className="flex items-center bg-muted/50 rounded-2xl p-1 border border-border/60">
               <Button

@@ -6,11 +6,11 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-muted text-primary-foreground relative overflow-hidden">
+    <footer className="bg-[#2b1f1a] text-white relative overflow-hidden">
       {/* Background Decoration */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-secondary rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent rounded-full blur-3xl"></div>
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#c92228] rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#1f6b3b] rounded-full blur-3xl"></div>
       </div>
 
       <div className="relative z-10">
@@ -22,7 +22,7 @@ export function Footer() {
               <div className="flex items-center gap-3">
                 <img src="/logoo.png" alt="Mama Sam Pizza" className="h-24 w-auto object-contain bg-white/5 p-2 rounded-full backdrop-blur-sm drop-shadow-md" />
               </div>
-              <p className="text-sm text-primary-foreground/70 leading-relaxed">
+              <p className="text-sm text-white/70 leading-relaxed">
                 Crafting authentic premium pizza with passion since 2010. Every slice tells a story of tradition and quality.
               </p>
               <div className="flex gap-4 pt-4">
@@ -55,7 +55,7 @@ export function Footer() {
 
             {/* Quick Links */}
             <div className="space-y-6">
-              <h3 className="heading-sm text-primary-foreground font-bold">Quick Links</h3>
+              <h3 className="heading-sm text-white font-bold">Quick Links</h3>
               <ul className="space-y-3">
                 {[
                   { label: 'Menu', href: '/menu' },
@@ -66,7 +66,7 @@ export function Footer() {
                   <li key={item.href}>
                     <Link
                       href={item.href}
-                      className="text-sm text-primary-foreground/70 hover:text-secondary transition-colors duration-300 flex items-center gap-2 group"
+                      className="text-sm text-white/70 hover:text-secondary transition-colors duration-300 flex items-center gap-2 group"
                     >
                       <span className="opacity-0 group-hover:opacity-100 transition-opacity">→</span>
                       <span>{item.label}</span>
@@ -78,7 +78,7 @@ export function Footer() {
 
             {/* Support */}
             <div className="space-y-6">
-              <h3 className="heading-sm text-primary-foreground font-bold">Support</h3>
+              <h3 className="heading-sm text-white font-bold">Support</h3>
               <ul className="space-y-3">
                 {[
                   { label: 'FAQ', href: '/faq' },
@@ -89,7 +89,7 @@ export function Footer() {
                   <li key={item.href}>
                     <Link
                       href={item.href}
-                      className="text-sm text-primary-foreground/70 hover:text-secondary transition-colors duration-300 flex items-center gap-2 group"
+                      className="text-sm text-white/70 hover:text-secondary transition-colors duration-300 flex items-center gap-2 group"
                     >
                       <span className="opacity-0 group-hover:opacity-100 transition-opacity">→</span>
                       <span>{item.label}</span>
@@ -101,14 +101,14 @@ export function Footer() {
 
             {/* Contact Info */}
             <div className="space-y-6">
-              <h3 className="heading-sm text-primary-foreground font-bold">Get in Touch</h3>
+              <h3 className="heading-sm text-white font-bold">Get in Touch</h3>
               <ul className="space-y-4">
                 <li className="flex gap-3 group">
                   <div className="p-2 bg-secondary/20 rounded-lg group-hover:bg-secondary/30 transition-colors">
                     <MapPin className="h-5 w-5 text-secondary" />
                   </div>
                   <div>
-                    <p className="text-xs text-primary-foreground/50 uppercase">Address</p>
+                    <p className="text-xs text-white/50 uppercase">Address</p>
                     <p className="text-sm font-semibold">476 Beach Rd, Hamilton ON L8H 3K7, Canada</p>
                   </div>
                 </li>
@@ -117,7 +117,7 @@ export function Footer() {
                     <Phone className="h-5 w-5 text-secondary" />
                   </div>
                   <div>
-                    <p className="text-xs text-primary-foreground/50 uppercase">Phone</p>
+                    <p className="text-xs text-white/50 uppercase">Phone</p>
                     <p className="text-sm font-semibold">(905) 545-8899</p>
                   </div>
                 </li>
@@ -126,7 +126,7 @@ export function Footer() {
                     <Mail className="h-5 w-5 text-secondary" />
                   </div>
                   <div>
-                    <p className="text-xs text-primary-foreground/50 uppercase">Email</p>
+                    <p className="text-xs text-white/50 uppercase">Email</p>
                     <p className="text-sm font-semibold">hello@mamasam.com</p>
                   </div>
                 </li>
@@ -135,7 +135,7 @@ export function Footer() {
                     <Clock className="h-5 w-5 text-secondary" />
                   </div>
                   <div>
-                    <p className="text-xs text-primary-foreground/50 uppercase">Hours</p>
+                    <p className="text-xs text-white/50 uppercase">Hours</p>
                     <p className="text-sm font-semibold">11AM - 11PM</p>
                   </div>
                 </li>
@@ -148,7 +148,7 @@ export function Footer() {
 
           {/* Bottom Section */}
           <div className="py-8 flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-sm text-primary-foreground/60">
+            <p className="text-sm text-white/60">
               © {currentYear} Mama Sam Pizza. Crafted with care and authenticity.
             </p>
             <p className="text-sm text-secondary font-semibold">

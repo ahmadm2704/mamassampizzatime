@@ -41,9 +41,9 @@ export function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 bg-sidebar border-r border-sidebar-border h-screen flex flex-col shadow-lg">
+    <aside className="w-64 bg-[#fdfbf7] border-r-2 border-[#e0d0b8] h-screen flex flex-col shadow-lg z-20 relative">
       {/* Logo */}
-      <div className="p-6 border-b border-sidebar-border/50">
+      <div className="p-6 border-b-2 border-[#e0d0b8]">
         <Link href="/admin" className="flex items-center gap-3 hover-lift">
           <img src="/logoo.png" alt="Mama Sam Admin" className="h-16 w-auto object-contain rounded-full shadow-sm" />
         </Link>
@@ -59,10 +59,10 @@ export function AdminSidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-medium text-sm ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-md transition-all duration-200 font-bold text-sm font-sans ${
                 isActive
-                  ? 'gradient-primary text-white shadow-lg scale-105'
-                  : 'text-sidebar-foreground hover:bg-sidebar-accent/10 hover-lift'
+                  ? 'bg-[#c92228] text-white shadow-md scale-[1.02] border-b-[3px] border-[#8b0000]'
+                  : 'text-[#785a46] hover:bg-[#c92228]/10 hover:text-[#c92228]'
               }`}
             >
               <Icon className="h-5 w-5 flex-shrink-0" />
@@ -73,9 +73,9 @@ export function AdminSidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="p-4 border-t border-sidebar-border/50 space-y-2 bg-sidebar-accent/5">
-        <Button 
-          className="w-full btn-primary shadow-md justify-start gap-2"
+      <div className="p-4 border-t-2 border-[#e0d0b8] space-y-2 bg-[#f3ede1]">
+        <Button
+          className="w-full bg-[#111] hover:bg-[#c92228] text-white font-bold shadow-md justify-start gap-2 border-b-[3px] border-black transition-colors"
           onClick={() => {
             if (typeof window !== 'undefined') {
               sessionStorage.removeItem('admin_auth');

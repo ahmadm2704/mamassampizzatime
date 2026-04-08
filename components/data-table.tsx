@@ -33,28 +33,28 @@ export function DataTable<T>({
   keyField,
 }: DataTableProps<T>) {
   return (
-    <div className="border border-border rounded-lg overflow-hidden">
+    <div className="bg-white border-2 border-[#e0d0b8] rounded-xl overflow-hidden shadow-sm">
       <Table>
-        <TableHeader className="bg-muted">
-          <TableRow>
+        <TableHeader className="bg-[#f3ede1]">
+          <TableRow className="border-b-2 border-[#e0d0b8]">
             {columns.map((column) => (
-              <TableHead key={String(column.key)} className="font-semibold">
+              <TableHead key={String(column.key)} className="font-bold text-[#2b1f1a] uppercase text-xs tracking-wider">
                 {column.header}
               </TableHead>
             ))}
-            {(onEdit || onDelete) && <TableHead className="text-right">Actions</TableHead>}
+            {(onEdit || onDelete) && <TableHead className="text-right font-bold text-[#2b1f1a] uppercase text-xs tracking-wider">Actions</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody>
           {data.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={columns.length + (onEdit || onDelete ? 1 : 0)} className="text-center py-8 text-muted-foreground">
+              <TableCell colSpan={columns.length + (onEdit || onDelete ? 1 : 0)} className="text-center py-10 text-[#785a46] font-medium font-sans">
                 No data found
               </TableCell>
             </TableRow>
           ) : (
             data.map((item) => (
-              <TableRow key={String(item[keyField])} className="hover:bg-muted/50 transition-colors">
+              <TableRow key={String(item[keyField])} className="hover:bg-[#fcfaf3] transition-colors border-b border-[#e0d0b8]/50">
                 {columns.map((column) => (
                   <TableCell key={String(column.key)}>
                     {column.render ? column.render(item[column.key], item) : String(item[column.key])}

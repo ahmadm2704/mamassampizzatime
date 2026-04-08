@@ -24,7 +24,8 @@ export function Navbar() {
   const cartItemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-xl border-b border-border/50 shadow-sm transition-all duration-300">
+    <nav className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-xl border-b-[3px] border-[#c92228] shadow-md transition-all duration-300 font-sans">
+      <div className="w-full h-3 bg-checker border-b border-[#8b0000]/50" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20 md:h-24">
           {/* Logo */}
@@ -33,12 +34,12 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-2">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={((pathname === item.href) ? 'text-primary bg-secondary/10' : 'text-foreground hover:text-primary hover:bg-muted/50') + ' px-4 py-2 text-sm font-medium transition-all duration-300 rounded-lg'}
+                className={((pathname === item.href) ? 'text-primary border-b-2 border-primary font-bold' : 'text-foreground hover:text-primary border-b-2 border-transparent') + ' px-3 py-2 text-md font-semibold tracking-wide transition-all duration-300 uppercase'}
               >
                 {item.label}
               </Link>
