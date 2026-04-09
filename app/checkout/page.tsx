@@ -140,15 +140,15 @@ export default function CheckoutPage() {
               </div>
             </div>
             <h1 className="heading-xl text-foreground mb-3">Order Confirmed!</h1>
-            <p className="text-body text-muted-foreground mb-3 font-mono">
+            <p className="text-body text-foreground font-bold mb-3 font-mono">
               Order #{orderDetails?.order_number}
             </p>
             <p className="text-body text-muted-foreground mb-8 leading-relaxed">
               Your order has been confirmed. You will receive a confirmation email shortly with all the details.
             </p>
-            <div className="gradient-primary text-white p-8 rounded-xl mb-8 text-left space-y-3">
+            <div className="bg-red-600 text-white p-8 rounded-xl mb-8 text-left space-y-3">
               <p className="text-sm opacity-90">Estimated {orderDetails?.delivery_type === 'delivery' ? 'Delivery' : 'Pickup'} Time</p>
-              <p className="heading-lg font-bold">{orderDetails?.estimated_time || '35-45'} minutes</p>
+              <p className="text-4xl font-bold">{orderDetails?.estimated_time || '35-45'} minutes</p>
               <p className="text-sm opacity-75 pt-2">Thank you for choosing Mama Sam Pizza!</p>
             </div>
             <Link href="/">
@@ -202,18 +202,18 @@ export default function CheckoutPage() {
                     <div key={s.number} className="flex-1">
                       <div className="flex items-center gap-3 mb-3">
                         <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
-                          isActive ? 'gradient-primary text-white shadow-lg' :
+                          isActive ? 'bg-red-600 text-white shadow-lg' :
                           isComplete ? 'bg-green-500 text-white' :
                           'bg-muted text-muted-foreground'
                         }`}>
                           {isComplete ? <CheckCircle className="h-6 w-6" /> : <Icon className="h-5 w-5" />}
                         </div>
                         <div className="flex-1">
-                          <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wide">{s.label}</p>
+                          <p className="text-sm text-foreground font-bold uppercase tracking-wide">{s.label}</p>
                         </div>
                       </div>
                       {idx < 1 && (
-                        <div className={`h-1 rounded-full ${isComplete || isActive ? 'gradient-primary' : 'bg-border'}`}></div>
+                        <div className={`h-1 rounded-full ${isComplete || isActive ? 'bg-red-600' : 'bg-border'}`}></div>
                       )}
                     </div>
                   );
@@ -266,12 +266,12 @@ export default function CheckoutPage() {
                       <select
                         value={formData.orderType}
                         onChange={(e) => setFormData({ ...formData, orderType: e.target.value })}
-                        className="input-professional flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background mt-1"
-                        required
-                      >
-                        <option value="delivery">?? Delivery</option>
-                        <option value="pickup">?? Pickup</option>
-                        <option value="dine-in">??? Dine-in</option>
+                          className="input-professional flex h-10 w-full rounded-md text-black dark:text-white border border-input bg-background px-3 py-2 text-sm ring-offset-background mt-1"
+                          required
+                        >
+                          <option value="delivery">🚗 Delivery</option>
+                          <option value="pickup">🏢 Pickup</option>
+                          <option value="dine-in">🍽️ Dine-in</option>
                       </select>
                     </div>
                   </div>
