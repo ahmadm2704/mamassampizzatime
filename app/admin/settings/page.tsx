@@ -1,11 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Save } from 'lucide-react';
+import { Save, Store, Power, PowerOff } from 'lucide-react';
+import { useStoreStatus } from '@/hooks/use-admin';
 
 export default function SettingsPage() {
+  const { isOpen, loading, toggleStoreStatus } = useStoreStatus();
   const [saved, setSaved] = useState(false);
   const [settings, setSettings] = useState({
     siteName: 'Mama Sam Pizza Time',
@@ -36,6 +38,34 @@ export default function SettingsPage() {
       )}
 
       <div className="grid lg:grid-cols-2 gap-8">
+        {/* Store Master Control */}
+        <div className={`col-span-full rounded-lg border p-8 space-y-6 transition-all ${!loading && isOpen ? 'bg-green-500/10 border-green-500/30' : 'bg-red-500/10 border-red-500/30'}`}>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
+              <div className={`p-4 rounded-full ${!loading && isOpen ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+                <Store className="h-8 w-8" />
+              </div>
+              <div>
+                <h2 className={`text-2xl font-bold ${!loading && isOpen ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                  Store is currently {loading ? 'Loading...' : isOpen ? 'OPEN' : 'CLOSED'}
+                </h2>
+                <p className="text-muted-foreground mt-1">
+                  {isOpen ? 'Customers can currently place online orders.' : 'Online ordering is temporarily paused. Customers cannot place orders.'}
+                </p>
+              </div>
+            </div>
+            
+            <Button 
+                onClick={() => toggleStoreStatus(!isOpen)}
+                size="lg"
+                disabled={loading}
+                className={isOpen ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-green-600 hover:bg-green-700 text-white'}
+                >
+                {isOpen ? <><PowerOff className="mr-2 h-5 w-5" /> Close Store</> : <><Power className="mr-2 h-5 w-5" /> Open Store</>}
+            </Button>
+          </div>
+        </div>
+
         {/* General Settings */}
         <div className="bg-card rounded-lg border border-border p-8 space-y-6">
           <h2 className="text-xl font-bold text-foreground">General Settings</h2>

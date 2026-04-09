@@ -152,20 +152,55 @@ export function useAdminCustomers() {
   useEffect(() => {
     async function fetchCustomers() {
       setLoading(true);
-      const { data } = await supabase
-        .from('users')
-        .select('*')
-        .eq('role', 'customer')
+      // Fetch all orders to build the customer CRM
+      const { data, error } = await supabase
+        .from('orders')
+        .select('id, created_at, phone, special_instructions, total, status')
         .order('created_at', { ascending: false });
 
-      if (data) {
-        // Just mock totalOrders safely or subquery
-        setCustomers(data.map((c: any) => ({
-          ...c,
-          name: c.full_name,
-          totalOrders: Math.floor(Math.random() * 10), // Ideally subquery
-          loyaltyPoints: c.loyalty_points || 0
-        })));
+      if (data && !error) {
+        const customerMap = new Map();
+        
+        data.forEach(order => {
+          if (!order.phone) return;
+          
+          let name = 'Unknown Customer';
+          if (order.special_instructions && order.special_instructions.includes('Name:')) {
+            name = order.special_instructions.split('\n')[0].replace('Name:', '').trim();
+          }
+
+          if (!customerMap.has(order.phone)) {
+            customerMap.set(order.phone, {
+              id: order.phone,
+              name,
+              email: 'Not provided', // Emails aren't natively captured in the basic orders checkout currently
+              phone: order.phone,
+              totalOrders: 0,
+              loyaltyPoints: 0,
+              totalSpent: 0,
+              lastOrder: order.created_at
+            });
+          }
+          
+          const cust = customerMap.get(order.phone);
+          cust.totalOrders += 1;
+          cust.totalSpent += Number(order.total || 0);
+          cust.loyaltyPoints = Math.floor(cust.totalSpent / 15); // $15 = 1 pt logic based on previous math standards
+          
+          // Update last order date if this order is newer
+          if (new Date(order.created_at) > new Date(cust.lastOrder)) {
+            cust.lastOrder = order.created_at;
+          }
+          
+          // Update latest name if it wasn't unknown
+          if (name !== 'Unknown Customer' && cust.name === 'Unknown Customer') {
+            cust.name = name;
+          }
+        });
+
+        // Convert to array and sort by most orders
+        const sortedCustomers = Array.from(customerMap.values()).sort((a, b) => b.totalOrders - a.totalOrders);
+        setCustomers(sortedCustomers);
       }
       setLoading(false);
     }
@@ -173,6 +208,48 @@ export function useAdminCustomers() {
   }, []);
 
   return { customers, loading };
+}
+
+export function useStoreStatus() {
+  const [isOpen, setIsOpen] = useState(true);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchStatus();
+  }, []);
+
+  const fetchStatus = async () => {
+    setLoading(true);
+    const { data } = await supabase
+      .from('categories')
+      .select('description')
+      .eq('name', 'STORE_STATUS_OVERRIDE')
+      .single();
+
+    if (data) {
+      setIsOpen(data.description === 'OPEN');
+    } else {
+      // Create it if missing
+      await supabase.from('categories').insert({
+        name: 'STORE_STATUS_OVERRIDE',
+        description: 'OPEN',
+        display_order: -5000,
+        is_active: false
+      });
+      setIsOpen(true);
+    }
+    setLoading(false);
+  };
+
+  const toggleStoreStatus = async (newStatus: boolean) => {
+    setIsOpen(newStatus);
+    await supabase
+      .from('categories')
+      .update({ description: newStatus ? 'OPEN' : 'CLOSED' })
+      .eq('name', 'STORE_STATUS_OVERRIDE');
+  };
+
+  return { isOpen, loading, toggleStoreStatus };
 }
 
 export function useAdminMenu() {
@@ -183,7 +260,8 @@ export function useAdminMenu() {
     setLoading(true);
     const { data } = await supabase
       .from('menu_items')
-      .select('*, categories(name)')
+      .select('*, categories!inner(name)')
+      .neq('categories.name', 'STORE_STATUS_OVERRIDE')
       .order('display_order', { ascending: true });
     
     if (data) {

@@ -8,12 +8,14 @@ import { Input } from '@/components/ui/input';
 import { ArrowLeft, CheckCircle, Lock, Truck, CreditCard } from 'lucide-react';
 import Link from 'next/link';
 import { useCart } from '@/hooks/use-cart';
+import { useStoreStatus } from '@/hooks/use-admin';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, cartTotal, clearCart, isLoaded } = useCart();
+  const { isOpen, loading: statusLoading } = useStoreStatus();
   const [step, setStep] = useState<'delivery' | 'confirmation'>('delivery');
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderDetails, setOrderDetails] = useState<any>(null);
@@ -43,6 +45,11 @@ export default function CheckoutPage() {
   };
 
   const processOrder = async () => {
+    if (!isOpen) {
+      alert("We're sorry! The store is currently closed and not accepting online orders right now.");
+      return;
+    }
+
     if (items.length === 0) {
       alert("Your cart is empty!");
       return;
@@ -132,7 +139,7 @@ export default function CheckoutPage() {
                 <CheckCircle className="h-12 w-12 text-white" />
               </div>
             </div>
-            <h1 className="heading-xl text-foreground mb-3">?? Order Confirmed!</h1>
+            <h1 className="heading-xl text-foreground mb-3">Order Confirmed!</h1>
             <p className="text-body text-muted-foreground mb-3 font-mono">
               Order #{orderDetails?.order_number}
             </p>
@@ -140,7 +147,7 @@ export default function CheckoutPage() {
               Your order has been confirmed. You will receive a confirmation email shortly with all the details.
             </p>
             <div className="gradient-primary text-white p-8 rounded-xl mb-8 text-left space-y-3">
-              <p className="text-sm opacity-90">?? Estimated {orderDetails?.delivery_type === 'delivery' ? 'Delivery' : 'Pickup'} Time</p>
+              <p className="text-sm opacity-90">Estimated {orderDetails?.delivery_type === 'delivery' ? 'Delivery' : 'Pickup'} Time</p>
               <p className="heading-lg font-bold">{orderDetails?.estimated_time || '35-45'} minutes</p>
               <p className="text-sm opacity-75 pt-2">Thank you for choosing Mama Sam Pizza!</p>
             </div>
@@ -167,7 +174,7 @@ export default function CheckoutPage() {
             <Link href="/cart" className="p-2 hover:bg-muted rounded-lg transition-colors">
               <ArrowLeft className="h-5 w-5 text-primary" />
             </Link>
-            <h1 className="heading-xl text-foreground">?? Checkout</h1>
+            <h1 className="heading-xl text-foreground">Checkout</h1>
           </div>
           <p className="text-muted-foreground text-body">Complete your order securely</p>
         </div>
